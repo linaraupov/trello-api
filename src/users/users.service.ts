@@ -1,27 +1,34 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateUserDto } from './users.dto';
+import { PaginationQueryDto } from 'src/common/dto/common.dto';
+import { getPaginateResponse } from 'src/common/utils/get-pagination-response';
+import { User } from './user.entity';
+import { CreateOrUpdateUserDto } from './users.dto';
 import { UsersRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectRepository(UsersRepository) public repo: UsersRepository) {}
 
-  async create(dto: CreateUserDto) {
+  async createOrUpdate(dto: CreateOrUpdateUserDto, userId?: string) {
     try {
-      const createdUser = this.repo.create(dto);
+      const user = this.repo.create(dto);
 
-      return await this.repo.save(createdUser);
+      return await this.repo.save(userId ? { id: userId, ...user } : user);
     } catch (err) {
       throw new UnprocessableEntityException();
     }
   }
 
-  async findById(id: string) {
+  async getMany({ limit, page }: PaginationQueryDto) {
+    return getPaginateResponse<User>(this.repo.createQueryBuilder(), { limit, page });
+  }
+
+  async getOne(id: string) {
     return await this.repo.findOne(id);
   }
 
-  async finByEmail(email: string) {
-    return await this.repo.findOneOrFail({ email });
+  async getByEmail(email: string) {
+    return await this.repo.findOne({ email });
   }
 }
