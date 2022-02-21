@@ -4,11 +4,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import crypto from 'crypto';
+import { TodoColumn } from 'src/todo-columns/todo-column.entity';
 
 const TABLE_NAME = 'users';
 
@@ -37,6 +39,11 @@ export class User {
 
   @Column({ type: 'text' })
   password: string;
+
+  @OneToMany(() => TodoColumn, (todoColumn) => todoColumn.user, {
+    cascade: true,
+  })
+  todoColumns: TodoColumn[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

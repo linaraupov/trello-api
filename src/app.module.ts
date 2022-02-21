@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JWTConfigService } from './auth/jwt-config.service';
+import { TodoColumnsModule } from './todo-columns/todo-columns.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { JWTConfigService } from './auth/jwt-config.service';
     }),
     UsersModule,
     AuthModule,
+    TodoColumnsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
