@@ -1,4 +1,4 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationQueryDto } from 'src/common/dto/common.dto';
 import { getPaginateResponse } from 'src/common/utils/get-pagination-response';
@@ -15,20 +15,32 @@ export class UsersService {
       const user = this.repo.create(dto);
 
       return await this.repo.save(userId ? { id: userId, ...user } : user);
-    } catch (err) {
-      throw new UnprocessableEntityException();
+    } catch (e) {
+      throw new UnprocessableEntityException(e?.message);
     }
   }
 
   async getMany({ limit, page }: PaginationQueryDto) {
-    return getPaginateResponse<User>(this.repo.createQueryBuilder(), { limit, page });
+    try {
+      return getPaginateResponse<User>(this.repo.createQueryBuilder(), { limit, page });
+    } catch (e) {
+      throw new BadRequestException(e?.message);
+    }
   }
 
   async getOne(id: string) {
-    return await this.repo.findOne(id);
+    try {
+      return await this.repo.findOne(id);
+    } catch (e) {
+      throw new BadRequestException(e?.message);
+    }
   }
 
   async getByEmail(email: string) {
-    return await this.repo.findOne({ email });
+    try {
+      return await this.repo.findOne({ email });
+    } catch (e) {
+      throw new BadRequestException(e?.message);
+    }
   }
 }

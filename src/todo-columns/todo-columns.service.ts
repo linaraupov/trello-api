@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { PaginationQueryDto } from 'src/common/dto/common.dto';
 import { getPaginateResponse } from 'src/common/utils/get-pagination-response';
 import { TodoColumn } from './todo-column.entity';
@@ -16,34 +21,46 @@ export class TodoColumnsService {
       return await this.repo.save(
         columnId ? { id: columnId, ...createdTodoColumn } : createdTodoColumn,
       );
-    } catch (err) {
-      throw new UnprocessableEntityException();
+    } catch (e) {
+      throw new UnprocessableEntityException(e?.message);
     }
   }
 
   async getOne(id: string, userId: string) {
-    return await this.repo.findOne(id, { where: { userId } });
+    try {
+      return await this.repo.findOne(id, { where: { userId } });
+    } catch (e) {
+      throw new BadRequestException(e?.message);
+    }
   }
 
   async getMany({ limit, page }: PaginationQueryDto, userId: string) {
-    const alias = 'todo_columns';
-    const qb = this.repo
-      .createQueryBuilder(alias)
-      .where(`${alias}.userId = :userId`, { userId })
-      .orderBy(`${alias}.createdAt`, 'DESC');
+    try {
+      const alias = 'todo_columns';
+      const qb = this.repo
+        .createQueryBuilder(alias)
+        .where(`${alias}.userId = :userId`, { userId })
+        .orderBy(`${alias}.createdAt`, 'DESC');
 
-    return getPaginateResponse<TodoColumn>(qb, { limit, page });
+      return getPaginateResponse<TodoColumn>(qb, { limit, page });
+    } catch (e) {
+      throw new BadRequestException(e?.message);
+    }
   }
 
   async deleteOne(id: string, userId: string) {
-    const totoColumns = await this.repo.findOne(id, { where: userId });
+    try {
+      const totoColumn = await this.repo.findOne(id, { where: userId });
 
-    if (!totoColumns) {
-      throw new NotFoundException('Column not found');
+      if (!totoColumn) {
+        throw new NotFoundException('Column not found');
+      }
+
+      await this.repo.remove(totoColumn);
+
+      return true;
+    } catch (e) {
+      throw new BadRequestException(e?.message);
     }
-
-    await this.repo.remove(totoColumns);
-
-    return true;
   }
 }

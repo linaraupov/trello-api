@@ -27,16 +27,35 @@ export class TodoColumnsController {
   constructor(private readonly service: TodoColumnsService) {}
 
   @UseGuards(JwtAuthGuard)
-  @ApiResponse({ status: 200, type: GetManyTodoColumnsResponseDto })
-  @Get('/')
-  async getTodoColumns(@Query() body: PaginationQueryDto, @IAM('id') userId: string) {
-    const todoColumns = await this.service.getMany(body, userId);
+  @ApiResponse({ status: 200, type: GetTodoColumnsResponseDto })
+  @Post('/')
+  async createTodoColumn(@Body() dto: CreateOrUpdateTodColumnDto, @IAM('id') userId: string) {
+    const createdColumn = await this.service.createOrUpdate(dto, userId);
+    return GetTodoColumnsResponseDto.createOne(createdColumn);
+  }
 
-    return { ...todoColumns, data: GetTodoColumnsResponseDto.createMany(todoColumns.data) };
+  @UseGuards(JwtAuthGuard)
+  @ApiResponse({ status: 200, type: GetTodoColumnsResponseDto })
+  @Patch('/:id')
+  async updateTodoColumn(
+    @Body() dto: CreateOrUpdateTodColumnDto,
+    @IAM('id') userId: string,
+    @Param('id') id: string,
+  ) {
+    const updatedColumn = await this.service.createOrUpdate(dto, userId, id);
+    return GetTodoColumnsResponseDto.createOne(updatedColumn);
   }
 
   @UseGuards(JwtAuthGuard)
   @ApiResponse({ status: 200, type: GetManyTodoColumnsResponseDto })
+  @Get('/')
+  async getTodoColumns(@Query() body: PaginationQueryDto, @IAM('id') userId: string) {
+    const todoColumns = await this.service.getMany(body, userId);
+    return { ...todoColumns, data: GetTodoColumnsResponseDto.createMany(todoColumns.data) };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiResponse({ status: 200, type: GetTodoColumnsResponseDto })
   @Get('/:id')
   async getTodoColumn(@Param('id') id: string, @IAM('id') userId: string) {
     const todoColumn = await this.service.getOne(id, userId);
@@ -44,25 +63,7 @@ export class TodoColumnsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @ApiResponse({ status: 200, type: GetManyTodoColumnsResponseDto })
-  @Post('/')
-  async createTodoColumn(@Body() dto: CreateOrUpdateTodColumnDto, @IAM('id') userId: string) {
-    return await this.service.createOrUpdate(dto, userId);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @ApiResponse({ status: 200, type: GetManyTodoColumnsResponseDto })
-  @Patch('/:id')
-  async updateTodoColumn(
-    @Body() dto: CreateOrUpdateTodColumnDto,
-    @IAM('id') userId: string,
-    @Param('id') id: string,
-  ) {
-    return await this.service.createOrUpdate(dto, userId, id);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @ApiResponse({ status: 200, type: GetManyTodoColumnsResponseDto })
+  @ApiResponse({ status: 200, type: GetTodoColumnsResponseDto })
   @Delete('/:id')
   async deleteTodoColumn(@Param('id') id: string, @IAM('id') userId: string) {
     return await this.service.deleteOne(id, userId);

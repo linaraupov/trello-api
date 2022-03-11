@@ -11,6 +11,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JWTConfigService } from './auth/jwt-config.service';
 import { TodoColumnsModule } from './todo-columns/todo-columns.module';
+import { TodoCardsModule } from './todo-cards/todo-cards.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { TodoColumnsModule } from './todo-columns/todo-columns.module';
     UsersModule,
     AuthModule,
     TodoColumnsModule,
+    TodoCardsModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

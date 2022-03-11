@@ -11,6 +11,8 @@ import {
 } from 'typeorm';
 import crypto from 'crypto';
 import { TodoColumn } from 'src/todo-columns/todo-column.entity';
+import { TodoCard } from 'src/todo-cards/todo-card.entity';
+import { Comment } from 'src/comments/comment.entity';
 
 const TABLE_NAME = 'users';
 
@@ -40,10 +42,14 @@ export class User {
   @Column({ type: 'text' })
   password: string;
 
-  @OneToMany(() => TodoColumn, (todoColumn) => todoColumn.user, {
-    cascade: true,
-  })
+  @OneToMany(() => TodoColumn, (todoColumn) => todoColumn.user, { cascade: true })
   todoColumns: TodoColumn[];
+
+  @OneToMany(() => TodoCard, (card) => card.user, { cascade: true })
+  todoCards: TodoCard[];
+
+  @OneToMany(() => Comment, (comment) => comment.author, { cascade: true })
+  comments: Comment[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

@@ -6,32 +6,33 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-const tableName = 'todo_columns';
+const tableName = 'comments';
 
-@Entity(tableName)
-export class TodoColumn {
+@Entity({ name: tableName })
+export class Comment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'text' })
-  name: string;
+  text: string;
 
-  @ManyToOne(() => User, (user) => user.todoColumns, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId' })
-  user: User;
+  @ManyToOne(() => User, (user) => user.comments, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'authorId' })
+  author: User;
 
   @Column('uuid')
-  userId: string;
+  authorId: string;
 
-  @OneToMany(() => TodoCard, (card) => card.todoColumn, {
-    cascade: true,
-  })
-  todoCards: TodoCard[];
+  @ManyToOne(() => TodoCard, (card) => card.comments, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'todoCardId' })
+  todoCard: TodoCard;
+
+  @Column('uuid')
+  todoCardId: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

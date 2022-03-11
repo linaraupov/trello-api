@@ -29,14 +29,14 @@ export class GetTodoColumnsResponseDto {
     this.userId = data.userId;
   }
 
-  static createOne(user: TodoColumn) {
+  static createOne(column: TodoColumn) {
     return new GetTodoColumnsResponseDto({
-      ...user,
+      ...column,
     });
   }
 
-  static createMany(users: TodoColumn[]) {
-    return users.map(GetTodoColumnsResponseDto.createOne);
+  static createMany(columns: TodoColumn[]) {
+    return columns.map(GetTodoColumnsResponseDto.createOne);
   }
 }
 
