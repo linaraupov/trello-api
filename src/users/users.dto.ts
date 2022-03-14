@@ -1,11 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsString, Length } from 'class-validator';
+import { IsEmail, IsString, Length } from 'class-validator';
+import { createPaginatedResponseDto } from 'src/common/types/common.types';
+import { User } from './user.entity';
 
-export class CreateUserDto {
+export class CreateOrUpdateUserDto {
   @ApiProperty()
-  @IsString()
-  @Length(0, 254)
+  @IsEmail()
   @Transform(({ value }) => value.toLowerCase())
   email: string;
 
@@ -19,3 +20,35 @@ export class CreateUserDto {
   @Length(0, 254)
   name: string;
 }
+
+export class GetUserResponseDto {
+  @ApiProperty()
+  @IsString()
+  id: string;
+
+  @ApiProperty()
+  @IsString()
+  email: string;
+
+  @ApiProperty()
+  @IsString()
+  name: string;
+
+  constructor(data: GetUserResponseDto) {
+    this.id = data.id;
+    this.name = data.name;
+    this.email = data.email;
+  }
+
+  static createOne(user: User) {
+    return new GetUserResponseDto({
+      ...user,
+    });
+  }
+
+  static createMany(users: User[]) {
+    return users.map(GetUserResponseDto.createOne);
+  }
+}
+
+export class GetManyUsersResponseDto extends createPaginatedResponseDto(GetUserResponseDto) {}

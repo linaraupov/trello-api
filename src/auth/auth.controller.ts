@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateUserDto } from 'src/users/users.dto';
+import { CreateOrUpdateUserDto } from 'src/users/users.dto';
 import { SignInDto } from './auth.dto';
 import { AuthService } from './auth.service';
 
@@ -17,9 +17,9 @@ export class AuthController {
   }
 
   @Post('/sign-up')
-  @ApiBody({ type: CreateUserDto })
+  @ApiBody({ type: CreateOrUpdateUserDto })
   @ApiResponse({ type: String })
-  async signUp(@Body() dto: CreateUserDto) {
+  async signUp(@Body() dto: CreateOrUpdateUserDto) {
     return await this.service.signUp(dto);
   }
 }

@@ -3,12 +3,16 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
-import configurations from './config/configurations';
+import configurations from './common/config/configurations';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './services/typeorm-config.service';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { JWTConfigService } from './auth/jwt-config.service';
+import { TodoColumnsModule } from './todo-columns/todo-columns.module';
+import { TodoCardsModule } from './todo-cards/todo-cards.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -20,12 +24,14 @@ import { PassportModule } from '@nestjs/passport';
       useClass: TypeOrmConfigService,
     }),
     PassportModule,
-    JwtModule.register({
-      secret: configurations().jwt.secret,
-      signOptions: { expiresIn: '3600s' },
+    JwtModule.registerAsync({
+      useClass: JWTConfigService,
     }),
     UsersModule,
     AuthModule,
+    TodoColumnsModule,
+    TodoCardsModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
