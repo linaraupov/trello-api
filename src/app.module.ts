@@ -1,24 +1,22 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
-import configurations from './common/config/configurations';
+import { envMap } from './common/configurations';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeOrmConfigService } from './services/typeorm-config.service';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { JWTConfigService } from './auth/jwt-config.service';
-import { TodoColumnsModule } from './todo-columns/todo-columns.module';
-import { TodoCardsModule } from './todo-cards/todo-cards.module';
+import { JWTConfigService } from './common/services';
+import { ColumnsModule } from './columns/columns.module';
 import { CommentsModule } from './comments/comments.module';
+import { TypeOrmConfigService } from './common/services';
+import { CardsModule } from './cards/cards.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [configurations],
+      load: [envMap],
     }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
@@ -29,11 +27,9 @@ import { CommentsModule } from './comments/comments.module';
     }),
     UsersModule,
     AuthModule,
-    TodoColumnsModule,
-    TodoCardsModule,
+    ColumnsModule,
+    CardsModule,
     CommentsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

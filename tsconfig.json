@@ -16,42 +16,6 @@
       "src/*": [
         "src/*"
       ],
-      "@purrweb/cloud-files-storage": [
-        "libs/cloud-files-storage/src"
-      ],
-      "@purrweb/cloud-files-storage/*": [
-        "libs/cloud-files-storage/src/*"
-      ],
-      "@purrweb/apple-auth-mobile": [
-        "libs/apple-auth-mobile/src"
-      ],
-      "@purrweb/apple-auth-mobile/*": [
-        "libs/apple-auth-mobile/src/*"
-      ],
-      "@purrweb/fb-auth-mobile": [
-        "libs/fb-auth-mobile/src"
-      ],
-      "@purrweb/fb-auth-mobile/*": [
-        "libs/fb-auth-mobile/src/*"
-      ],
-      "@purrweb/google-auth-mobile": [
-        "libs/google-auth-mobile/src"
-      ],
-      "@purrweb/google-auth-mobile/*": [
-        "libs/google-auth-mobile/src/*"
-      ],
-      "@purrweb/google-maps": [
-        "libs/google-maps/src"
-      ],
-      "@purrweb/google-maps/*": [
-        "libs/google-maps/src/*"
-      ],
-      "@purrweb/firebase": [
-        "libs/firebase/src"
-      ],
-      "@purrweb/firebase/*": [
-        "libs/firebase/src/*"
-      ]
     },
     "typeRoots": [
       "./node_modules/@types",
