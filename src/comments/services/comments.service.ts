@@ -46,7 +46,7 @@ export class CommentsService {
 
     try {
       await this.repo.delete(id);
-      return true;
+      return comment;
     } catch (e) {
       throw new BadRequestException(e?.message);
     }

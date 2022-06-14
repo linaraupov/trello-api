@@ -40,7 +40,6 @@ export class CommentsController {
   @Post('/')
   async createOne(@Body() dto: CreateCommentDto, @IAM('id') authorId: string) {
     const comment = await this.service.createOne(dto, authorId);
-
     return GetCommentResponseDto.createOne(comment);
   }
 
@@ -53,14 +52,14 @@ export class CommentsController {
     @Param('id', ParseUUIDPipe) id: string,
   ) {
     const comment = await this.service.updateOne(dto, authorId, id);
-
     return GetCommentResponseDto.createOne(comment);
   }
 
-  @ApiResponse({ status: 200, type: Boolean })
+  @ApiResponse({ status: 200, type: GetCommentResponseDto })
   @ApiOperation({ description: 'Delete comment' })
   @Delete('/:id')
   async deleteOne(@Param('id', ParseUUIDPipe) id: string) {
-    return await this.service.deleteOne(id);
+    const comment = await this.service.deleteOne(id);
+    return GetCommentResponseDto.createOne(comment);
   }
 }

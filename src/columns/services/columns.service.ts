@@ -64,7 +64,7 @@ export class ColumnsService {
     try {
       await this.repo.remove(totoColumn);
 
-      return true;
+      return totoColumn;
     } catch (e) {
       throw new BadRequestException(e?.message);
     }

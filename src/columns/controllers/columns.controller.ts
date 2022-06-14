@@ -66,10 +66,11 @@ export class ColumnsController {
     return GetColumnsResponseDto.createOne(column);
   }
 
-  @ApiResponse({ status: 200, type: Boolean })
+  @ApiResponse({ status: 200, type: ColumnResponseDto })
   @ApiOperation({ description: 'Delete column' })
   @Delete('/:id')
   async deleteOne(@Param('id', ParseUUIDPipe) id: string, @IAM('id') userId: string) {
-    return await this.service.deleteOne(id, userId);
+    const column = await this.service.deleteOne(id, userId);
+    return GetColumnsResponseDto.createOne(column);
   }
 }

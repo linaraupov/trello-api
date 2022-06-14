@@ -54,7 +54,7 @@ export class CardsService {
       }
 
       await this.repo.remove(card);
-      return true;
+      return card;
     } catch (e) {
       throw new BadRequestException(e?.message);
     }

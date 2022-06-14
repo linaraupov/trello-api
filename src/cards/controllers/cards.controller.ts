@@ -58,10 +58,11 @@ export class CardsController {
     return GetCardResponseDto.createOne(card);
   }
 
-  @ApiResponse({ status: 200, type: Boolean })
+  @ApiResponse({ status: 200, type: CardResponseDto })
   @ApiOperation({ description: 'Delete' })
   @Delete('/:id')
   async deleteOne(@Param('id', ParseUUIDPipe) id: string, @IAM('id') userId: string) {
-    return await this.service.deleteOne(id, userId);
+    const card = await this.service.deleteOne(id, userId);
+    return GetCardResponseDto.createOne(card);
   }
 }
