@@ -14,7 +14,7 @@ export class CardsService {
   async createOne(dto: CreateCardDto, userId: string) {
     try {
       const createdCard = this.repo.create({ ...dto, userId });
-      return await this.repo.save(createdCard);
+      return this.repo.save(createdCard);
     } catch (e) {
       throw new UnprocessableEntityException(e?.message);
     }
@@ -22,7 +22,7 @@ export class CardsService {
 
   async updateOne(dto: UpdateCardDto, userId: string, id: string) {
     try {
-      return await this.repo.save({ id, userId, ...dto });
+      return this.repo.save({ id, userId, ...dto });
     } catch (e) {
       throw new UnprocessableEntityException(e?.message);
     }
@@ -39,7 +39,7 @@ export class CardsService {
 
   async getMany(userId: string) {
     try {
-      return await this.repo.find({ where: { userId } });
+      return this.repo.find({ where: { userId } });
     } catch (e) {
       throw new BadRequestException(e?.message);
     }

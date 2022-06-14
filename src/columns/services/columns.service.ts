@@ -18,7 +18,7 @@ export class ColumnsService {
     try {
       const createdColumn = this.repo.create({ ...dto, userId });
 
-      return await this.repo.save(createdColumn);
+      return this.repo.save(createdColumn);
     } catch (e) {
       throw new UnprocessableEntityException(e?.message);
     }
@@ -26,7 +26,7 @@ export class ColumnsService {
 
   async updateOne(dto: UpdateColumnDto, userId: string, id?: string) {
     try {
-      return await this.repo.save({ ...dto, userId, id });
+      return this.repo.save({ ...dto, userId, id });
     } catch (e) {
       throw new UnprocessableEntityException(e?.message);
     }
@@ -34,7 +34,7 @@ export class ColumnsService {
 
   async getOne(id: string, userId: string) {
     try {
-      return await this.repo.findOne(id, { where: { userId } });
+      return this.repo.findOne(id, { where: { userId } });
     } catch (e) {
       throw new BadRequestException(e?.message);
     }

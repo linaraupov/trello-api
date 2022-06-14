@@ -40,7 +40,7 @@ export class AuthService {
     try {
       const user = await this.validateUser(dto);
 
-      return await this.createJwtToken(user);
+      return this.createJwtToken(user);
     } catch (err) {
       throw err;
     }
@@ -50,7 +50,7 @@ export class AuthService {
     try {
       const user = await this.usersService.createOne(dto);
 
-      return await this.createJwtToken(user);
+      return this.createJwtToken(user);
     } catch (err) {
       throw err;
     }

@@ -11,7 +11,7 @@ export class UsersService {
     try {
       const user = this.repo.create(dto);
 
-      return await this.repo.save(user);
+      return this.repo.save(user);
     } catch (e) {
       throw new UnprocessableEntityException(e?.message);
     }
@@ -21,7 +21,7 @@ export class UsersService {
     try {
       const user = this.repo.create(dto);
 
-      return await this.repo.save({ ...user, id });
+      return this.repo.save({ ...user, id });
     } catch (e) {
       throw new UnprocessableEntityException(e?.message);
     }
@@ -29,7 +29,7 @@ export class UsersService {
 
   async getOne(id: string) {
     try {
-      return await this.repo.findOneOrFail(id);
+      return this.repo.findOneOrFail(id);
     } catch (e) {
       throw new BadRequestException(e?.message);
     }
@@ -37,7 +37,7 @@ export class UsersService {
 
   async getByEmail(email: string) {
     try {
-      return await this.repo.findOneOrFail({ email });
+      return this.repo.findOneOrFail({ email });
     } catch (e) {
       throw new BadRequestException(e?.message);
     }

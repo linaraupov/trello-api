@@ -15,7 +15,7 @@ export class CommentsService {
     try {
       const createdComment = this.repo.create({ ...dto, authorId });
 
-      return await this.repo.save(createdComment);
+      return this.repo.save(createdComment);
     } catch (e) {
       throw new UnprocessableEntityException(e?.message);
     }
@@ -23,7 +23,7 @@ export class CommentsService {
 
   async updateOne(dto: UpdateCommentDto, authorId: string, id: string) {
     try {
-      return await this.repo.save({ id, authorId, ...dto });
+      return this.repo.save({ id, authorId, ...dto });
     } catch (e) {
       throw new UnprocessableEntityException(e?.message);
     }
@@ -31,7 +31,7 @@ export class CommentsService {
 
   async getMany(cardId: string) {
     try {
-      return await this.repo.find({ where: { cardId }, relations: ['author'] });
+      return this.repo.find({ where: { cardId }, relations: ['author'] });
     } catch (e) {
       throw new BadRequestException(e?.message);
     }
