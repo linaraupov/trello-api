@@ -15,7 +15,7 @@ export class CommentResponseDto {
   @IsString()
   cardId: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: User })
   author: User;
 
   @ApiProperty()

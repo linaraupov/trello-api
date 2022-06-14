@@ -14,7 +14,7 @@ export class CardResponseDto {
   @IsString()
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsOptional()
   @IsString()
   description?: string;

@@ -8,9 +8,9 @@ export class CreateUserDto {
   @Transform(({ value }) => value.toLowerCase())
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({ minLength: 8, maxLength: 254 })
   @IsString()
-  @Length(0, 254)
+  @Length(8, 254)
   password: string;
 
   @ApiProperty()
